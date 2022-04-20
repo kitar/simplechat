@@ -35,6 +35,16 @@ return [
 
     'connections' => [
 
+        'dynamodb' => [
+            'driver' => 'dynamodb',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'token' => env('AWS_SESSION_TOKEN', null),
+            'endpoint' => env('DYNAMODB_ENDPOINT', null),
+            'prefix' => '',
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
