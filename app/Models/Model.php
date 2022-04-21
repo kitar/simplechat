@@ -14,4 +14,13 @@ class Model extends BaseModel
     {
         return env('DB_DEFAULT_TABLE');
     }
+
+    public static function extractLastEvaluatedKey($item)
+    {
+        if (empty($item)) {
+            return null;
+        }
+
+        return $item->meta()['LastEvaluatedKey'] ?? null;
+    }
 }

@@ -48,11 +48,9 @@ class Room extends Model
                        ->limit(100)
                        ->query();
 
-        $firstRoom = $rooms->first();
-
         return [
             'rooms' => $rooms,
-            'LastEvaluatedKey' => $firstRoom ? $firstRoom->meta()['LastEvaluatedKey'] ?? null : null,
+            'LastEvaluatedKey' => static::extractLastEvaluatedKey($rooms->first()),
         ];
     }
 }

@@ -1,0 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "~trix/dist/trix.css";
+[data-trix-button-group="file-tools"] { display: none !important; }

@@ -50,11 +50,9 @@ class Message extends Model
                           ->limit(100)
                           ->query();
 
-        $firstMessage = $messages->first();
-
         return [
             'messages' => $messages,
-            'LastEvaluatedKey' => $firstMessage ? $firstMessage->meta()['LastEvaluatedKey'] ?? null : null,
+            'LastEvaluatedKey' => static::extractLastEvaluatedKey($messages->first()),
         ];
     }
 }

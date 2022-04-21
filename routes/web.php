@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\RoomsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('rooms/{roomId}', [RoomsController::class, 'show']);
+Route::get('messages/{roomId}/{messageId?}', [MessagesController::class, 'index']);
+Route::post('messages', [MessagesController::class, 'store']);
