@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\MessageCreated;
 use Ramsey\Uuid\Uuid;
 
 class Message extends Model
@@ -33,6 +34,10 @@ class Message extends Model
 
             // item attributes
             $message->id = $uuid;
+        });
+
+        static::created(function ($message) {
+            MessageCreated::dispatch($message);
         });
     }
 

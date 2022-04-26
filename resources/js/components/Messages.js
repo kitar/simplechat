@@ -5,20 +5,28 @@ import moment from 'moment';
 export default (roomId) => ({
   messages: [],
   init() {
-    this.getMessages();
+    Echo.channel(`rooms.${roomId}`).listen('.message.created', (e) => {
+      this.pushMessage(e.message);
+    }).subscribed(() => {
+      this.getMessages();
+    });
   },
-  getMessages(messageId) {
-    if (messageId == undefined) {
-      messageId = ''
+  getMessages(oldestMessageId) {
+    if (typeof oldestMessageId == 'undefined') {
+      oldestMessageId = ''
     };
-    axios.get(`/messages/${roomId}/${messageId}`).then((res) => {
-      _.forEach(res.data, (item) => {
-        if (_.find(this.messages, { id: item.id }) != undefined) return;
-        item.created_at = moment(item.created_at).format('YYYY-MM-DD HH:mm');
-        item.updated_at = moment(item.updated_at).format('YYYY-MM-DD HH:mm');
-        this.messages.unshift(item);
+    axios.get(`/messages/${roomId}/${oldestMessageId}`).then((res) => {
+      _.forEach(res.data, (message) => {
+        this.pushMessage(message);
       });
       this.messages = _.sortBy(this.messages, ['id'], ['asc']);
     });
-  }
+  },
+  pushMessage(message) {
+    if (typeof _.find(this.messages, { id: message.id }) == 'undefined') {
+      message.created_at = moment(message.created_at).format('YYYY-MM-DD HH:mm');
+      message.updated_at = moment(message.updated_at).format('YYYY-MM-DD HH:mm');
+      this.messages.push(message);
+    };
+  },
 });

@@ -11,6 +11,7 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "pusher/pusher-php-server": "^7.0",
         "ramsey/uuid": "^4.3"
     },
     "require-dev": {
