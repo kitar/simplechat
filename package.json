@@ -10,6 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@alpinejs/intersect": "^3.10.2",
         "@tailwindcss/forms": "^0.5.0",
         "alpinejs": "^3.10.2",
         "axios": "^0.25",

@@ -3,18 +3,22 @@ import axios from "axios";
 
 export default (roomId) => ({
   messages: [],
+  atBottom: false,
   init() {
     Echo.channel(`rooms.${roomId}`).listen('.message.created', (e) => {
+      if (this.atBottom == true) {
+        this.$nextTick(this.scrollToBottom);
+      }
       this.pushMessage(e.message);
     }).subscribed(() => {
-      this.getMessages();
+      this.getMessages().then(this.scrollToBottom);
     });
   },
   getMessages(oldestMessageId) {
     if (typeof oldestMessageId == 'undefined') {
       oldestMessageId = ''
     };
-    axios.get(`/messages/${roomId}/${oldestMessageId}`).then((res) => {
+    return axios.get(`/messages/${roomId}/${oldestMessageId}`).then((res) => {
       _.forEach(res.data, (message) => {
         this.pushMessage(message);
       });
@@ -25,5 +29,8 @@ export default (roomId) => ({
     if (typeof _.find(this.messages, { id: message.id }) == 'undefined') {
       this.messages.push(message);
     };
+  },
+  scrollToBottom() {
+    document.getElementById('bottom').scrollIntoView();
   },
 });

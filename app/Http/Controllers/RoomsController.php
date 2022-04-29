@@ -44,6 +44,7 @@ class RoomsController extends Controller
 
         return view('rooms.show', [
             'room' => $room,
+            'username' => session()->get("rooms.{$room->id}.username"),
         ]);
     }
 

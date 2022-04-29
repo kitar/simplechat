@@ -6,7 +6,7 @@
           <nav class="flex justify-between" aria-label="Breadcrumb">
             <ol role="list" class="flex items-center space-x-1">
               <li>
-                <div>
+                <div class="flex items-center">
                   <a href="" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
                 </div>
               </li>
@@ -22,7 +22,8 @@
             <div>
               <form action="/rooms/{{ $room->id }}/leave" method="POST">
                 @csrf
-                <input type="submit" value="Leave room" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                <span class="text-xs text-gray-500">{{ $username }}</span>
+                <input type="submit" value="Leave room" class="ml-2 inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
               </form>
             </div>
           </nav>
@@ -37,6 +38,7 @@
               <div x-html="message.message"></div>
             </div>
           </template>
+          <div id="bottom" x-intersect:enter="atBottom = true" x-intersect:leave="atBottom = false" class="h-2 mb-2"></div>
         </div>
         <div class="px-4 pb-4">
           <div x-data="messageInput('{{ $room->id }}')" @trix-file-accept.prevent>
