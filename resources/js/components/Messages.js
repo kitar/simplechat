@@ -1,6 +1,5 @@
 import _ from "lodash";
 import axios from "axios";
-import moment from 'moment';
 
 export default (roomId) => ({
   messages: [],
@@ -24,8 +23,6 @@ export default (roomId) => ({
   },
   pushMessage(message) {
     if (typeof _.find(this.messages, { id: message.id }) == 'undefined') {
-      message.created_at = moment(message.created_at).format('YYYY-MM-DD HH:mm');
-      message.updated_at = moment(message.updated_at).format('YYYY-MM-DD HH:mm');
       this.messages.push(message);
     };
   },

@@ -7,11 +7,11 @@ use Ramsey\Uuid\Uuid;
 class Room extends Model
 {
     protected $fillable = [
-        'id', 'name',
+        'id', 'name', 'password',
     ];
 
     protected $hidden = [
-        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'TYPE', 'admin_password', 'user_password',
+        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'TYPE', 'password',
     ];
 
     protected static function booted()
@@ -28,9 +28,8 @@ class Room extends Model
 
             // item attributes
             $room->id = $uuid;
-            $room->name = $room->name ?? 'NO NAME';
-            $room->admin_password = $room->admin_password ?? null;
-            $room->user_password = $room->user_password ?? null;
+            $room->name = empty($room->name) ?? 'NO NAME';
+            $room->password = empty($room->password) ?? null;
         });
     }
 

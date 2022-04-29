@@ -3,11 +3,11 @@
     <div class="max-w-4xl mx-auto bg-white border-x border-gray-200">
       <div class="flex flex-col h-screen">
         <div class="px-2 py-2 sm:px-6 sm:py-4 border-b border-gray-200">
-          <nav class="flex" aria-label="Breadcrumb">
+          <nav class="flex justify-between" aria-label="Breadcrumb">
             <ol role="list" class="flex items-center space-x-1">
               <li>
                 <div>
-                  <a href="#" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
+                  <a href="" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
                 </div>
               </li>
               <li>
@@ -15,10 +15,16 @@
                   <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
                   </svg>
-                  <span class="ml-1 text-sm text-gray-500">ROOM#{{ $room['id'] }}</span>
+                  <span class="ml-1 text-sm text-gray-500">{{ $room['name'] }}</span>
                 </div>
               </li>
             </ol>
+            <div>
+              <form action="/rooms/{{ $room->id }}/leave" method="POST">
+                @csrf
+                <input type="submit" value="Leave room" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+              </form>
+            </div>
           </nav>
         </div>
         <div x-data="messages('{{ $room->id }}')" class="mb-auto h-full overflow-scroll text-sm py-4">

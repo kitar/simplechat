@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Room;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -26,6 +27,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Route::bind('room', function ($value) {
+            $room = Room::find($value);
+            if (! $room) {
+                abort(404);
+            }
+            return $room;
+        });
+
         $this->configureRateLimiting();
 
         $this->routes(function () {

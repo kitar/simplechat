@@ -15,6 +15,11 @@ class Message extends Model
         'PK', 'SK', 'GSI1PK', 'GSI1SK', 'TYPE',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i',
+        'updated_at' => 'datetime:Y-m-d H:i',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($message) {

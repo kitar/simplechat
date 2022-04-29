@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,6 +26,17 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('show-room', function (?User $user, $roomId) {
+            $roomSession = session()->get("rooms.{$roomId}");
+            if (
+                ! empty($roomId) &&
+                ! empty($roomSession) &&
+                ! empty($roomSession['username'])
+            ) {
+                return true;
+            }
+
+            // todo: allow if $user owned the room.
+        });
     }
 }
