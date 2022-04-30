@@ -9,6 +9,31 @@ use Illuminate\Support\Facades\Hash;
 
 class RoomsController extends Controller
 {
+    public function index(Request $request)
+    {
+        $roomsHistory = collect($request->session()->get('roomsHistory'))->sortByDesc(function ($item) {
+            return $item['joined_at'];
+        });
+
+        return view('rooms.index', ['roomsHistory' => $roomsHistory]);
+    }
+
+    public function store(Request $request)
+    {
+        $payload = $this->validate($request, [
+            'name' => ['nullable', 'max:50'],
+            'password' => ['nullable', 'max:50'],
+        ]);
+
+        if (! empty($payload['password'])) {
+            $payload['password'] = Hash::make($payload['password']);
+        }
+
+        $room = Room::create($payload);
+
+        return redirect()->route('rooms.show', $room->id);
+    }
+
     public function entrance(Request $request, Room $room)
     {
         if (Gate::allows('show-room', $room->id)) {
@@ -32,6 +57,10 @@ class RoomsController extends Controller
         ]);
 
         session()->put("rooms.{$room->id}.username", $request->username);
+        session()->put("roomsHistory.{$room->id}", [
+            'name' => $room->name,
+            'joined_at' => now()->format('Y-m-d H:i'),
+        ]);
 
         return redirect()->route('rooms.show', $room->id);
     }

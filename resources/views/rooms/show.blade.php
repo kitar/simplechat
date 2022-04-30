@@ -7,7 +7,7 @@
             <ol role="list" class="flex items-center space-x-1">
               <li>
                 <div class="flex items-center">
-                  <a href="" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
+                  <a href="/" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
                 </div>
               </li>
               <li>

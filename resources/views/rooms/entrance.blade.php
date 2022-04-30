@@ -7,7 +7,7 @@
             <ol role="list" class="flex items-center space-x-1">
               <li>
                 <div>
-                  <a href="#" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
+                  <a href="/" class="text-sm font-medium text-gray-400 hover:text-gray-700">Simplechat</a>
                 </div>
               </li>
               <li>
@@ -41,7 +41,7 @@
               <div class="max-w-lg mb-4">
                 <label for="password" class="block text-sm font-medium text-gray-700">password</label>
                 <div class="mt-1">
-                  <input type="text" name="password" value="{{ old('password') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                  <input type="password" name="password" value="{{ old('password') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                 </div>
                 @error('password')
                   <p class="mt-2 text-sm text-red-600" id="email-error">{{ $message }}</p>
