@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
-ROute::get('rooms/{room}/entrance', [RoomsController::class, 'entrance'])->name('rooms.entrance');
-ROute::post('rooms/{room}/enter', [RoomsController::class, 'enter'])->name('rooms.enter');
-ROute::post('rooms/{room}/leave', [RoomsController::class, 'leave'])->name('rooms.leave');
+Route::get('rooms/{room}/entrance', [RoomsController::class, 'entrance'])->name('rooms.entrance');
+Route::post('rooms/{room}/enter', [RoomsController::class, 'enter'])->name('rooms.enter');
+Route::post('rooms/{room}/leave', [RoomsController::class, 'leave'])->name('rooms.leave');
 
 Route::get('messages/{roomId}/{messageId?}', [MessagesController::class, 'index'])->name('messages.index');
 Route::post('messages', [MessagesController::class, 'store'])->name('messages.post');

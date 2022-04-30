@@ -28,8 +28,11 @@ class Room extends Model
 
             // item attributes
             $room->id = $uuid;
-            $room->name = empty($room->name) ?? 'NO NAME';
-            $room->password = empty($room->password) ?? null;
+            $room->name = empty($room->name) ? 'NO NAME': $room->name;
+            $room->password = empty($room->password) ? null : $room->password;
+
+            // ttl
+            $room->ttl = time() + (env('DB_ITEM_TTL_HOURS', 1) * 60 * 60);
         });
     }
 

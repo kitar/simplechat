@@ -39,6 +39,9 @@ class Message extends Model
 
             // item attributes
             $message->id = $uuid;
+
+            // ttl
+            $message->ttl = time() + (env('DB_ITEM_TTL_HOURS', 1) * 60 * 60);
         });
 
         static::created(function ($message) {
