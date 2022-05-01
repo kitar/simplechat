@@ -1,7 +1,7 @@
 <x-layout>
   <div class="bg-gray-50">
     <div class="max-w-4xl mx-auto bg-white border-x border-gray-200">
-      <div class="flex flex-col h-screen">
+      <div class="flex flex-col" id="screen-container">
         <div class="px-2 py-2 sm:px-6 sm:py-4 border-b border-gray-200">
           <nav class="flex justify-between" aria-label="Breadcrumb">
             <ol role="list" class="flex items-center space-x-1">
