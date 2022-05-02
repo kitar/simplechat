@@ -28,7 +28,8 @@
             </div>
           </nav>
         </div>
-        <div x-data="messages('{{ $room->id }}')" class="mb-auto h-full overflow-scroll text-sm py-4">
+        <div x-data="messages('{{ $room->id }}')" class="mb-auto h-full overflow-scroll flex flex-col-reverse text-sm py-4">
+          <div id="bottom" x-intersect:enter="atBottom = true" x-intersect:leave="atBottom = false" class="h-2 mb-2"></div>
           <template x-for="message in messages">
             <div class="px-2 sm:px-6 py-2 hover:bg-gray-50">
               <div class="flex items-baseline">
@@ -38,7 +39,7 @@
               <div x-html="message.message"></div>
             </div>
           </template>
-          <div id="bottom" x-intersect:enter="atBottom = true" x-intersect:leave="atBottom = false" class="h-2 mb-2"></div>
+          <div id="top" x-intersect:enter="getMoreMessages" class="h-2"></div>
         </div>
         <div class="px-4 pb-4">
           <div x-data="messageInput('{{ $room->id }}')" @trix-file-accept.prevent>

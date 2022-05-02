@@ -60,7 +60,7 @@ class Message extends Model
                           ->keyCondition('SK', 'begins_with', 'MSG#')
                           ->exclusiveStartKey($exclusiveStartKey)
                           ->scanIndexForward($sort == 'desc' ? false : true)
-                          ->limit(100)
+                          ->limit(50)
                           ->query();
 
         return [
