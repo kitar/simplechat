@@ -1,10 +1,13 @@
 import _ from "lodash";
 import axios from "axios";
 
-export default (roomId) => ({
+export default (sessionId, roomId) => ({
+  sessionId: sessionId,
+  roomId: roomId,
   messages: [],
   atBottom: false,
   loadingMessages: true,
+  deletingMessage: null,
   init() {
     Echo.channel(`rooms.${roomId}`).listen('.message.created', (e) => {
       if (this.atBottom == true) {
@@ -13,6 +16,10 @@ export default (roomId) => ({
       if (typeof _.find(this.messages, { id: e.message.id }) == 'undefined') {
         this.messages.unshift(e.message);
       };
+    }).listen('.message.deleted', (e) => {
+      this.messages = _.remove(this.messages, (item) => {
+        return e.message.id != item.id;
+      });
     }).subscribed(() => {
       this.getMessages().then(this.scrollToBottom);
     });
@@ -39,4 +46,11 @@ export default (roomId) => ({
   scrollToBottom() {
     document.getElementById('bottom').scrollIntoView();
   },
+  deleteMessage(messageId, confirmed) {
+    this.deletingMessage = messageId;
+    if (confirmed) {
+      axios.delete(`/messages/${roomId}/${messageId}`);
+      this.deletingMessage = null;
+    }
+  }
 });

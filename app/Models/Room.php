@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 class Room extends Model
 {
     protected $fillable = [
-        'id', 'name', 'password',
+        'id', 'name', 'password', 'owner_session_id',
     ];
 
     protected $hidden = [

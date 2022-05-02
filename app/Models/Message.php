@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Events\MessageCreated;
+use App\Events\MessageDeleted;
 use Ramsey\Uuid\Uuid;
 
 class Message extends Model
 {
     protected $fillable = [
-        'id', 'room_id', 'username', 'message',
+        'id', 'room_id', 'username', 'message', 'owner_session_id',
     ];
 
     protected $hidden = [
@@ -47,11 +48,19 @@ class Message extends Model
         static::created(function ($message) {
             MessageCreated::dispatch($message);
         });
+
+        static::deleted(function ($message) {
+            MessageDeleted::dispatch($message);
+        });
     }
 
     public static function find($messageId)
     {
-        return parent::find(['PK' => "MSG#", 'SK' => "MSG#{$messageId}"]);
+        return static::index('GSI1')
+                     ->keyCondition('GSI1PK', '=', 'MSG#')
+                     ->keyCondition('GSI1SK', '=', "MSG#{$messageId}")
+                     ->query()
+                     ->first();
     }
 
     public static function getMessages($roomId, $exclusiveStartKey = null, $sort = 'desc', $limit = 50)

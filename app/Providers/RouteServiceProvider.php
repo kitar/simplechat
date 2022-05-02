@@ -30,6 +30,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('room', function ($value) {
             $room = Room::find($value);
             if (! $room) {
+                session()->forget("roomsHistory.{$value}");
                 abort(404);
             }
             return $room;

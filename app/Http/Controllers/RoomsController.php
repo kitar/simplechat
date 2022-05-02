@@ -29,6 +29,8 @@ class RoomsController extends Controller
             $payload['password'] = Hash::make($payload['password']);
         }
 
+        $payload['owner_session_id'] = session()->getId();
+
         $room = Room::create($payload);
 
         return redirect()->route('rooms.show', $room->id);

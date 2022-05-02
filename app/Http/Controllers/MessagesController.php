@@ -32,7 +32,17 @@ class MessagesController extends Controller
         ]);
 
         $payload['username'] = session()->get("rooms.{$request->room_id}.username");
+        $payload['owner_session_id'] = session()->getId();
 
         Message::create($payload);
+    }
+
+    public function destroy(Request $request, $roomId, $messageId)
+    {
+        $message = Message::find($messageId);
+
+        $this->authorize('manage-message', $message);
+
+        $message->delete();
     }
 }
