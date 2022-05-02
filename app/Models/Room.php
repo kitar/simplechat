@@ -34,6 +34,10 @@ class Room extends Model
             // ttl
             $room->ttl = time() + (env('DB_ITEM_TTL_HOURS', 1) * 60 * 60);
         });
+
+        static::deleting(function ($room) {
+            Message::deleteMessages($room->id);
+        });
     }
 
     public static function find($id)

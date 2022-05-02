@@ -54,18 +54,50 @@ class Message extends Model
         return parent::find(['PK' => "MSG#", 'SK' => "MSG#{$messageId}"]);
     }
 
-    public static function getMessages($roomId, $exclusiveStartKey = null, $sort = 'desc')
+    public static function getMessages($roomId, $exclusiveStartKey = null, $sort = 'desc', $limit = 50)
     {
         $messages = static::keyCondition('PK', '=', "ROOM#{$roomId}")
                           ->keyCondition('SK', 'begins_with', 'MSG#')
                           ->exclusiveStartKey($exclusiveStartKey)
                           ->scanIndexForward($sort == 'desc' ? false : true)
-                          ->limit(50)
+                          ->limit($limit)
                           ->query();
 
         return [
             'messages' => $messages,
             'LastEvaluatedKey' => static::extractLastEvaluatedKey($messages->first()),
         ];
+    }
+
+    public static function getAllMessages($exclusiveStartKey = null, $sort = 'desc', $limit = 50)
+    {
+        $messages = static::index('GSI1')
+                          ->keyCondition('GSI1PK', '=', 'MSG#')
+                          ->exclusiveStartKey($exclusiveStartKey)
+                          ->scanIndexForward($sort == 'desc' ? false : true)
+                          ->limit($limit)
+                          ->query();
+
+        return [
+            'messages' => $messages,
+            'LastEvaluatedKey' => static::extractLastEvaluatedKey($messages->first()),
+        ];
+    }
+
+    public static function deleteMessages($roomId)
+    {
+        $limit = 1000;
+        $startKey = null;
+        $endOfMessages = false;
+        while ($endOfMessages != true) {
+            $res = self::getMessages($roomId, $startKey, 'desc', $limit);
+            foreach ($res['messages'] as $message) {
+                $message->delete();
+            }
+            if (count($res['messages']) < $limit) {
+                $endOfMessages = true;
+            }
+            $startKey = $res['LastEvaluatedKey'];
+        }
     }
 }
