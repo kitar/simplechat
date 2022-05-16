@@ -29,3 +29,9 @@ Route::post('rooms/{room}/leave', [RoomsController::class, 'leave'])->name('room
 Route::get('messages/{roomId}/{messageId?}', [MessagesController::class, 'index'])->name('messages.index');
 Route::post('messages', [MessagesController::class, 'store'])->name('messages.post');
 Route::delete('messages/{roomId}/{messageId}', [MessagesController::class, 'destroy'])->name('messages.destroy');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
