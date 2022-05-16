@@ -7,11 +7,11 @@ use Ramsey\Uuid\Uuid;
 class Room extends Model
 {
     protected $fillable = [
-        'id', 'name', 'password', 'owner_session_id',
+        'id', 'name', 'password', 'owner_session_id', 'created_by',
     ];
 
     protected $hidden = [
-        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'TYPE', 'password',
+        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'GSI2PK', 'GSI2SK', 'TYPE', 'password',
     ];
 
     protected static function booted()
@@ -25,6 +25,10 @@ class Room extends Model
             $room->GSI1PK = "ROOM#";
             $room->GSI1SK = "ROOM#{$uuid}";
             $room->TYPE = self::class;
+            if (! empty($room->created_by)) {
+                $room->GSI2PK = "USER#{$room->created_by}";
+                $room->GSI2SK = "ROOM#{$uuid}";
+            }
 
             // item attributes
             $room->id = $uuid;
@@ -45,11 +49,26 @@ class Room extends Model
         return parent::find(['PK' => "ROOM#{$id}", 'SK' => "ROOM#{$id}"]);
     }
 
-    public static function getRooms($exclusiveStartKey = null)
+    public static function getAllRooms($exclusiveStartKey = null)
     {
         $rooms = static::index('GSI1')
                        ->keyCondition('GSI1PK', '=', 'ROOM#')
                        ->keyCondition('GSI1SK', 'begins_with', 'ROOM#')
+                       ->exclusiveStartKey($exclusiveStartKey)
+                       ->limit(100)
+                       ->query();
+
+        return [
+            'rooms' => $rooms,
+            'LastEvaluatedKey' => static::extractLastEvaluatedKey($rooms->first()),
+        ];
+    }
+
+    public static function getUserRooms($userUuid, $exclusiveStartKey = null)
+    {
+        $rooms = static::index('GSI2')
+                       ->keyCondition('GSI2PK', '=', "USER#{$userUuid}")
+                       ->keyCondition('GSI2SK', 'begins_with', 'ROOM#')
                        ->exclusiveStartKey($exclusiveStartKey)
                        ->limit(100)
                        ->query();

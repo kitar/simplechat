@@ -9,11 +9,11 @@ use Ramsey\Uuid\Uuid;
 class Message extends Model
 {
     protected $fillable = [
-        'id', 'room_id', 'username', 'message', 'owner_session_id',
+        'id', 'room_id', 'username', 'message', 'owner_session_id', 'created_by',
     ];
 
     protected $hidden = [
-        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'TYPE',
+        'PK', 'SK', 'GSI1PK', 'GSI1SK', 'GSI2PK', 'GSI2SK', 'TYPE',
     ];
 
     protected $casts = [
@@ -37,6 +37,10 @@ class Message extends Model
             $message->GSI1PK = "MSG#";
             $message->GSI1SK = "MSG#{$uuid}";
             $message->TYPE = self::class;
+            if (! empty($message->created_by)) {
+                $message->GSI2PK = "USER#{$message->created_by}";
+                $message->GSI2SK = "MSG#{$uuid}";
+            }
 
             // item attributes
             $message->id = $uuid;
@@ -82,6 +86,23 @@ class Message extends Model
     {
         $messages = static::index('GSI1')
                           ->keyCondition('GSI1PK', '=', 'MSG#')
+                          ->keyCondition('GSI1SK', 'begins_with', 'MSG#')
+                          ->exclusiveStartKey($exclusiveStartKey)
+                          ->scanIndexForward($sort == 'desc' ? false : true)
+                          ->limit($limit)
+                          ->query();
+
+        return [
+            'messages' => $messages,
+            'LastEvaluatedKey' => static::extractLastEvaluatedKey($messages->first()),
+        ];
+    }
+
+    public static function getUserMessages($userUuid, $exclusiveStartKey = null, $sort = 'desc', $limit = 50)
+    {
+        $messages = static::index('GSI2')
+                          ->keyCondition('GSI2PK', '=', "USER#{$userUuid}")
+                          ->keyCondition('GSI2SK', 'begins_with', 'MSG#')
                           ->exclusiveStartKey($exclusiveStartKey)
                           ->scanIndexForward($sort == 'desc' ? false : true)
                           ->limit($limit)

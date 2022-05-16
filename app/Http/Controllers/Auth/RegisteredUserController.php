@@ -35,7 +35,11 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', function ($attribute, $value, $fail) {
+                if (User::find($value)) {
+                    $fail('The '.$attribute.' has already been taken.');
+                }
+            }],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 

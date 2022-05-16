@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Kitar\Dynamodb\Model\AuthUserProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,15 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Auth::provider('dynamodb', function ($app, array $config) {
+            return new AuthUserProvider(
+                $app['hash'],
+                $config['model'],
+                $config['api_token_name'] ?? null,
+                $config['api_token_index'] ?? null
+            );
+        });
 
         Gate::define('show-room', function (?User $user, $roomId) {
             $roomSession = session()->get("rooms.{$roomId}");
