@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -20,7 +21,9 @@ class UserDelete extends Command
         }
 
         if ($this->option('with-data')) {
-            // todo
+            foreach (Room::getUserRooms($user->uuid)['rooms'] as $room) {
+                $room->delete();
+            }
         }
 
         $user->delete();

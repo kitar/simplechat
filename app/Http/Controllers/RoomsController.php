@@ -21,7 +21,11 @@ class RoomsController extends Controller
     public function store(Request $request)
     {
         $payload = $this->validate($request, [
-            'name' => ['required', 'max:50'],
+            'name' => ['required', 'max:50', function ($attribute, $value, $fail) use ($request) {
+                if ($request->user() && Room::getUserRooms($request->user()->uuid)['rooms']->count() >= 10) {
+                    $fail('You cannot create rooms more than 10.');
+                }
+            }],
             'password' => ['nullable', 'max:50'],
         ]);
 
