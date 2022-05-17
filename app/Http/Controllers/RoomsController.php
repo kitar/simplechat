@@ -30,6 +30,9 @@ class RoomsController extends Controller
         }
 
         $payload['owner_session_id'] = session()->getId();
+        if ($request->user()) {
+            $payload['created_by'] = $request->user()->uuid;
+        }
 
         $room = Room::create($payload);
 

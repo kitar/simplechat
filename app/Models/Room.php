@@ -17,7 +17,7 @@ class Room extends Model
     protected static function booted()
     {
         static::creating(function ($room) {
-            $uuid = Uuid::uuid4()->toString();
+            $uuid = Uuid::uuid6()->toString();
 
             // index attributes
             $room->PK = "ROOM#{$uuid}";

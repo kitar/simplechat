@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\RoomsController;
 use Illuminate\Support\Facades\Auth;
@@ -34,8 +35,8 @@ Route::get('messages/{roomId}/{messageId?}', [MessagesController::class, 'index'
 Route::post('messages', [MessagesController::class, 'store'])->name('messages.post');
 Route::delete('messages/{roomId}/{messageId}', [MessagesController::class, 'destroy'])->name('messages.destroy');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 require __DIR__.'/auth.php';
