@@ -3,3 +3,9 @@
 @tailwind utilities;
 @import "~trix/dist/trix.css";
 [data-trix-button-group="file-tools"] { display: none !important; }
+
+.message a { @apply font-medium text-indigo-600 hover:text-indigo-500; }
+.message h1 { @apply text-2xl font-extrabold text-gray-900 tracking-tight; }
+.message blockquote { @apply border-l-2 border-gray-400 pl-2 text-gray-400; }
+.message ul { @apply ml-4 list-disc; }
+.message ol { @apply ml-4 list-decimal; }

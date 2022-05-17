@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\RoomsController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,13 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('rooms.index');
-});
+    if (Auth::guest()) {
+        return view('index');
+    } else {
+        return redirect()->route('dashboard');
+    }
+})->name('root');
 
 Route::get('rooms', [RoomsController::class, 'index'])->name('rooms.index');
 Route::post('rooms', [RoomsController::class, 'store'])->name('rooms.store');
 Route::get('rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
-Route::get('rooms/{room}/entrance', [RoomsController::class, 'entrance'])->name('rooms.entrance');
 Route::post('rooms/{room}/enter', [RoomsController::class, 'enter'])->name('rooms.enter');
 Route::post('rooms/{room}/leave', [RoomsController::class, 'leave'])->name('rooms.leave');
 

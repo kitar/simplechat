@@ -21,7 +21,7 @@ class RoomsController extends Controller
     public function store(Request $request)
     {
         $payload = $this->validate($request, [
-            'name' => ['nullable', 'max:50'],
+            'name' => ['required', 'max:50'],
             'password' => ['nullable', 'max:50'],
         ]);
 
@@ -34,17 +34,6 @@ class RoomsController extends Controller
         $room = Room::create($payload);
 
         return redirect()->route('rooms.show', $room->id);
-    }
-
-    public function entrance(Request $request, Room $room)
-    {
-        if (Gate::allows('show-room', $room->id)) {
-            return redirect()->route('rooms.show', $room->id);
-        }
-
-        return view('rooms.entrance', [
-            'room' => $room,
-        ]);
     }
 
     public function enter(Request $request, Room $room)
@@ -70,7 +59,9 @@ class RoomsController extends Controller
     public function show(Request $request, Room $room)
     {
         if (Gate::denies('show-room', $room->id)) {
-            return redirect()->route('rooms.entrance', $room->id);
+            return view('rooms.entrance', [
+                'room' => $room,
+            ]);
         }
 
         return view('rooms.show', [
