@@ -1,7 +1,8 @@
 import _ from "lodash";
 import axios from "axios";
 
-export default (sessionId, roomId) => ({
+export default (userUuid, sessionId, roomId) => ({
+  userUuid: userUuid,
   sessionId: sessionId,
   roomId: roomId,
   messages: [],
@@ -45,6 +46,9 @@ export default (sessionId, roomId) => ({
   },
   scrollToBottom() {
     document.getElementById('bottom').scrollIntoView();
+  },
+  canDeleteMessage(message) {
+    return sessionId == message.owner_session_id || userUuid == message.created_by;
   },
   deleteMessage(messageId, confirmed) {
     this.deletingMessage = messageId;

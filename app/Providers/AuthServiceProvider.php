@@ -55,7 +55,12 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-message', function (?User $user, Message $message) {
-            return $message && $message->owner_session_id == session()->getId();
+            if ($message && $message->owner_session_id == session()->getId()) {
+                return true;
+            }
+            if ($user && $user->uuid == $message->created_by) {
+                return true;
+            }
         });
     }
 }

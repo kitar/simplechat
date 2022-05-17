@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class MessagesController extends Controller
 {
@@ -33,6 +34,9 @@ class MessagesController extends Controller
 
         $payload['username'] = session()->get("rooms.{$request->room_id}.username");
         $payload['owner_session_id'] = session()->getId();
+        if ($request->user()) {
+            $payload['created_by'] = $request->user()->uuid;
+        }
 
         Message::create($payload);
     }
