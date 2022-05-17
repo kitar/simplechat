@@ -33,12 +33,13 @@
                         </td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           @if (empty($room->password))
-                          <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Yes</span>
+                          <span class="inline-flex rounded-full bg-gray-100 px-2 text-xs font-semibold leading-5 text-gray-800">No</span>
                           @else
+                          <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Yes</span>
                           @endif
                         </td>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <x-link href="#">Manage</x-link>
+                          <x-link href="{{ route('rooms.edit', $room->id) }}">Manage</x-link>
                         </td>
                       </tr>
                       @endforeach

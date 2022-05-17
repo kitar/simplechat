@@ -49,13 +49,14 @@ class Room extends Model
         return parent::find(['PK' => "ROOM#{$id}", 'SK' => "ROOM#{$id}"]);
     }
 
-    public static function getAllRooms($exclusiveStartKey = null)
+    public static function getAllRooms($exclusiveStartKey = null, $sort = 'desc', $limit = 50)
     {
         $rooms = static::index('GSI1')
                        ->keyCondition('GSI1PK', '=', 'ROOM#')
                        ->keyCondition('GSI1SK', 'begins_with', 'ROOM#')
                        ->exclusiveStartKey($exclusiveStartKey)
-                       ->limit(100)
+                       ->scanIndexForward($sort == 'desc' ? false : true)
+                       ->limit($limit)
                        ->query();
 
         return [
@@ -64,13 +65,14 @@ class Room extends Model
         ];
     }
 
-    public static function getUserRooms($userUuid, $exclusiveStartKey = null)
+    public static function getUserRooms($userUuid, $exclusiveStartKey = null, $sort = 'desc', $limit = 50)
     {
         $rooms = static::index('GSI2')
                        ->keyCondition('GSI2PK', '=', "USER#{$userUuid}")
                        ->keyCondition('GSI2SK', 'begins_with', 'ROOM#')
                        ->exclusiveStartKey($exclusiveStartKey)
-                       ->limit(100)
+                       ->scanIndexForward($sort == 'desc' ? false : true)
+                       ->limit($limit)
                        ->query();
 
         return [

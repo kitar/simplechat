@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Message;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,10 @@ class AuthServiceProvider extends ServiceProvider
             ) {
                 return true;
             }
+        });
 
-            // todo: allow if $user owned the room.
+        Gate::define('manage-room', function (User $user, Room $room) {
+            return $user->uuid === $room->created_by;
         });
 
         Gate::define('manage-message', function (?User $user, Message $message) {

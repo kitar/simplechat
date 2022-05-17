@@ -36,7 +36,11 @@ class RoomsController extends Controller
 
         $room = Room::create($payload);
 
-        return redirect()->route('rooms.show', $room->id);
+        if ($request->user()) {
+            return redirect()->route('dashboard');
+        } else {
+            return redirect()->route('rooms.show', $room->id);
+        }
     }
 
     public function enter(Request $request, Room $room)
@@ -78,5 +82,36 @@ class RoomsController extends Controller
         session()->forget("rooms.{$room->id}");
 
         return redirect()->route('rooms.show', $room->id);
+    }
+
+    public function edit(Request $request, Room $room)
+    {
+        $this->authorize('manage-room', $room);
+
+        return view('rooms.edit', [
+            'room' => $room,
+        ]);
+    }
+
+    public function update(Request $request, Room $room)
+    {
+        $this->authorize('manage-room', $room);
+
+        $payload = $this->validate($request, [
+            'name' => ['required', 'min:2', 'max:50'],
+        ]);
+
+        $room->update($payload);
+
+        return redirect()->route('dashboard');
+    }
+
+    public function destroy(Request $request, Room $room)
+    {
+        $this->authorize('manage-room', $room);
+
+        $room->delete();
+
+        return redirect()->route('dashboard');
     }
 }

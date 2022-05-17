@@ -30,6 +30,9 @@ Route::post('rooms', [RoomsController::class, 'store'])->name('rooms.store');
 Route::get('rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
 Route::post('rooms/{room}/enter', [RoomsController::class, 'enter'])->name('rooms.enter');
 Route::post('rooms/{room}/leave', [RoomsController::class, 'leave'])->name('rooms.leave');
+Route::get('rooms/{room}/edit', [RoomsController::class, 'edit'])->name('rooms.edit');
+Route::put('rooms/{room}', [RoomsController::class, 'update'])->name('rooms.update');
+Route::delete('rooms/{room}', [RoomsController::class, 'destroy'])->name('rooms.destroy');
 
 Route::get('messages/{roomId}/{messageId?}', [MessagesController::class, 'index'])->name('messages.index');
 Route::post('messages', [MessagesController::class, 'store'])->name('messages.post');
