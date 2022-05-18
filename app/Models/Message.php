@@ -116,18 +116,22 @@ class Message extends Model
 
     public static function deleteMessages($roomId)
     {
-        $limit = 1000;
         $startKey = null;
         $endOfMessages = false;
         while ($endOfMessages != true) {
-            $res = self::getMessages($roomId, $startKey, 'desc', $limit);
-            foreach ($res['messages'] as $message) {
-                $message->delete();
-            }
-            if (count($res['messages']) < $limit) {
+            $res = self::getMessages($roomId, $startKey, 'desc');
+
+            // mute events to avoid too much broadcasts.
+            self::withoutEvents(function () use ($res) {
+                foreach ($res['messages'] as $message) {
+                    $message->delete();
+                }
+            });
+
+            $startKey = $res['LastEvaluatedKey'];
+            if (empty($startKey)) {
                 $endOfMessages = true;
             }
-            $startKey = $res['LastEvaluatedKey'];
         }
     }
 }
