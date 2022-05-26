@@ -24,7 +24,7 @@ class MessageCreated implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new Channel('rooms.'.$this->message->room_id);
+        return new PrivateChannel('rooms.'.$this->message->room_id);
     }
 
     public function broadcastAs()

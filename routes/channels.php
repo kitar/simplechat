@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
+use Ramsey\Uuid\Uuid;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,19 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('rooms.{roomId}', function ($user, $roomId) {
+    if (Gate::allows('show-room', $roomId)) {
+        return [
+            'id' => $user->id,
+            'username' => session()->get("rooms.{$roomId}.username"),
+        ];
+    }
 });
+
+Route::post('broadcasting/auth', function () {
+    $request = request()->setUserResolver(function () {
+        return new User(['id' => Uuid::uuid4()->toString()]);
+    });
+
+    return Broadcast::auth($request);
+})->middleware('web');

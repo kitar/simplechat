@@ -10,7 +10,7 @@ export default (userUuid, sessionId, roomId) => ({
   loadingMessages: true,
   deletingMessage: null,
   init() {
-    Echo.channel(`rooms.${roomId}`).listen('.message.created', (e) => {
+    Echo.private(`rooms.${roomId}`).listen('.message.created', (e) => {
       if (this.atBottom == true) {
         this.$nextTick(this.scrollToBottom);
       }
