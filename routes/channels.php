@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\User;
+use App\Models\GuestUser;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
-use Ramsey\Uuid\Uuid;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +27,7 @@ Broadcast::channel('rooms.{roomId}', function ($user, $roomId) {
 
 Route::post('broadcasting/auth', function () {
     $request = request()->setUserResolver(function () {
-        return new User(['id' => Uuid::uuid4()->toString()]);
+        return new GuestUser(['id' => microtime(true) * 10000]);
     });
 
     return Broadcast::auth($request);

@@ -64,6 +64,18 @@
   </div>
   <div class="hidden lg:block relative w-0 flex-1">
     <img class="absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80" alt="">
+    <div x-data="presence('{{ $room->id }}')" class="absolute inset-4">
+      <div class="w-auto px-2 pb-2 bg-white bg-opacity-60 flex flex-col space-y-2">
+        <template x-for="user in users">
+          <div class="flex items-center space-x-2">
+            <span class="h-4 w-4 bg-green-100 rounded-full flex items-center justify-center" aria-hidden="true">
+              <span class="h-2 w-2 bg-green-400 rounded-full"></span>
+            </span>
+            <span class="text-sm font-medium text-gray-700" x-text="user"></span>
+          </div>
+        </template>
+      </div>
+    </div>
   </div>
 </div>
 </x-guest-layout>
