@@ -14,17 +14,17 @@ https://demo.simplechat.app/
 
 Create a DynamoDB table (it's a single table) with the following conditions:
 
-- Partition key: PK (string)
-- Sort key: SK (string)
+- Partition key: `PK` (string)
+- Sort key: `SK` (string)
 - Global secondary indexes
     - GSI1
-        - Index name: GSI1
-        - Partition key: GSI1PK (string)
-        - Sort key: GSI1SK (string)
+        - Index name: `GSI1`
+        - Partition key: `GSI1PK` (string)
+        - Sort key: `GSI1SK` (string)
     - GSI2
-        - Index name: GSI2
-        - Partition key: GSI2PK (string)
-        - Sort key: GSI2SK (string)
+        - Index name: `GSI2`
+        - Partition key: `GSI2PK` (string)
+        - Sort key: `GSI2SK` (string)
 
 Create IAM for interacting with DynamoDB. The policy will be like below:
 
