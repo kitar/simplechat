@@ -1,4 +1,4 @@
-require('./bootstrap');
+import './bootstrap';
 
 import Trix from 'trix'
 import Alpine from 'alpinejs'
