@@ -119,14 +119,15 @@ class Message extends Model
         $startKey = null;
         $endOfMessages = false;
         while ($endOfMessages != true) {
-            $res = self::getMessages($roomId, $startKey, 'desc');
+            $res = self::getMessages($roomId, $startKey, 'desc', 25);
 
-            // mute events to avoid too much broadcasts.
-            self::withoutEvents(function () use ($res) {
-                foreach ($res['messages'] as $message) {
-                    $message->delete();
-                }
+            $keys = $res['messages']->map(function ($message) {
+                return $message->only(['PK', 'SK']);
             });
+
+            if (! $keys->isEmpty()) {
+                Message::batchDeleteItem($keys);
+            }
 
             $startKey = $res['LastEvaluatedKey'];
             if (empty($startKey)) {
