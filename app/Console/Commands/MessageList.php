@@ -33,5 +33,7 @@ class MessageList extends Command
             return $item;
         }));
         $this->info("LastEvaluatedKey: {$messages['LastEvaluatedKey']}");
+
+        return Command::SUCCESS;
     }
 }
