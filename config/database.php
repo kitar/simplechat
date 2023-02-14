@@ -34,7 +34,6 @@ return [
     */
 
     'connections' => [
-
         'dynamodb' => [
             'driver' => 'dynamodb',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -44,6 +43,7 @@ return [
             'endpoint' => env('DYNAMODB_ENDPOINT', null),
             'prefix' => '',
         ],
+
 
         'sqlite' => [
             'driver' => 'sqlite',
