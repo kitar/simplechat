@@ -34,7 +34,6 @@ return [
     */
 
     'connections' => [
-
         'dynamodb' => [
             'driver' => 'dynamodb',
             'key' => env('AWS_ACCESS_KEY_ID'),

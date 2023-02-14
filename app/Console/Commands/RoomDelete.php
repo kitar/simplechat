@@ -11,7 +11,7 @@ class RoomDelete extends Command
 
     protected $description = 'Delete a room.';
 
-    public function handle()
+    public function handle(): void
     {
         $roomId = $this->argument('roomId');
 

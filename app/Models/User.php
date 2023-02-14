@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Uuid;
@@ -33,7 +32,7 @@ class User extends Model implements AuthenticatableContract
             // index attributes
             $user->PK = "USER#{$user->email}";
             $user->SK = "USER#{$user->email}";
-            $user->GSI1PK = "USER#";
+            $user->GSI1PK = 'USER#';
             $user->GSI1SK = "USER#{$uuid}";
             $user->TYPE = self::class;
 

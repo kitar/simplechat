@@ -11,7 +11,7 @@ class UserList extends Command
 
     protected $description = 'List users.';
 
-    public function handle()
+    public function handle(): void
     {
         $users = User::getUsers();
 

@@ -34,7 +34,7 @@ class Message extends Model
             // index attributes
             $message->PK = "ROOM#{$message->room_id}";
             $message->SK = "MSG#{$uuid}";
-            $message->GSI1PK = "MSG#";
+            $message->GSI1PK = 'MSG#';
             $message->GSI1SK = "MSG#{$uuid}";
             $message->TYPE = self::class;
             if (! empty($message->created_by)) {

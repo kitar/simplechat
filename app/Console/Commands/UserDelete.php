@@ -12,7 +12,7 @@ class UserDelete extends Command
 
     protected $description = 'Delete a user.';
 
-    public function handle()
+    public function handle(): void
     {
         $uuid = $this->argument('uuid');
         $user = User::findByUuid($uuid);
