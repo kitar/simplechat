@@ -11,7 +11,7 @@ class RoomList extends Command
 
     protected $description = 'List rooms.';
 
-    public function handle()
+    public function handle(): void
     {
         $options = $this->options();
 

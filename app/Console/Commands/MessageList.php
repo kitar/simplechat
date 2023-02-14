@@ -12,7 +12,7 @@ class MessageList extends Command
 
     protected $description = 'List messages.';
 
-    public function handle()
+    public function handle(): int
     {
         $options = $this->options();
 

@@ -20,7 +20,7 @@ class MessageDeleted implements ShouldBroadcastNow
         $this->message = $message;
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return new PrivateChannel('rooms.'.$this->message->room_id);
     }

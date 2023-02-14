@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +20,7 @@ class RoomsController extends Controller
         return view('rooms.index', ['roomsHistory' => $roomsHistory]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $payload = $this->validate($request, [
             'name' => ['required', 'max:50', function ($attribute, $value, $fail) use ($request) {
@@ -47,7 +49,7 @@ class RoomsController extends Controller
         }
     }
 
-    public function enter(Request $request, Room $room)
+    public function enter(Request $request, Room $room): RedirectResponse
     {
         $this->validate($request, [
             'username' => ['required', 'min:2', 'max:50'],
@@ -67,7 +69,7 @@ class RoomsController extends Controller
         return redirect()->route('rooms.show', $room->id);
     }
 
-    public function show(Request $request, Room $room)
+    public function show(Request $request, Room $room): View
     {
         if (Gate::denies('show-room', $room->id)) {
             return view('rooms.entrance', [
@@ -81,14 +83,14 @@ class RoomsController extends Controller
         ]);
     }
 
-    public function leave(Request $request, Room $room)
+    public function leave(Request $request, Room $room): RedirectResponse
     {
         session()->forget("rooms.{$room->id}");
 
         return redirect()->route('rooms.show', $room->id);
     }
 
-    public function edit(Request $request, Room $room)
+    public function edit(Request $request, Room $room): View
     {
         $this->authorize('manage-room', $room);
 
@@ -97,7 +99,7 @@ class RoomsController extends Controller
         ]);
     }
 
-    public function update(Request $request, Room $room)
+    public function update(Request $request, Room $room): RedirectResponse
     {
         $this->authorize('manage-room', $room);
 
@@ -110,7 +112,7 @@ class RoomsController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function destroy(Request $request, Room $room)
+    public function destroy(Request $request, Room $room): RedirectResponse
     {
         $this->authorize('manage-room', $room);
 
