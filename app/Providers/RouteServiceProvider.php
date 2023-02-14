@@ -33,6 +33,7 @@ class RouteServiceProvider extends ServiceProvider
                 session()->forget("roomsHistory.{$value}");
                 abort(404);
             }
+
             return $room;
         });
 

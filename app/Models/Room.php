@@ -22,7 +22,7 @@ class Room extends Model
             // index attributes
             $room->PK = "ROOM#{$uuid}";
             $room->SK = "ROOM#{$uuid}";
-            $room->GSI1PK = "ROOM#";
+            $room->GSI1PK = 'ROOM#';
             $room->GSI1SK = "ROOM#{$uuid}";
             $room->TYPE = self::class;
             if (! empty($room->created_by)) {
@@ -32,7 +32,7 @@ class Room extends Model
 
             // item attributes
             $room->id = $uuid;
-            $room->name = empty($room->name) ? 'NO NAME': $room->name;
+            $room->name = empty($room->name) ? 'NO NAME' : $room->name;
             $room->password = empty($room->password) ? null : $room->password;
 
             // ttl
