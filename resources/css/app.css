@@ -1,8 +1,9 @@
+@import "../../node_modules/trix/dist/trix.css";
+[data-trix-button-group="file-tools"] { display: none !important; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "~trix/dist/trix.css";
-[data-trix-button-group="file-tools"] { display: none !important; }
 
 .message a { @apply font-medium text-indigo-600 hover:text-indigo-500; }
 .message h1 { @apply text-2xl font-extrabold text-gray-900 tracking-tight; }
