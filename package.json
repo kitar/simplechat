@@ -11,7 +11,7 @@
         "autoprefixer": "^10.4.0",
         "axios": "^0.25",
         "laravel-echo": "^1.11.7",
-        "laravel-vite-plugin": "^0.7.3",
+        "laravel-vite-plugin": "^0.8.0",
         "lodash": "^4.17.19",
         "postcss": "^8.4.12",
         "pusher-js": "^8.0.0",
