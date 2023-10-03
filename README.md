@@ -2,13 +2,7 @@
 
 An example chat app to illustrate the usage of [kitar/laravel-dynamodb](https://github.com/kitar/laravel-dynamodb).
 
-<img src="https://user-images.githubusercontent.com/157844/168950520-58900531-c8f3-4726-a5e5-fa94c15bea9e.png">
-
-### Demo
-
-https://demo.simplechat.app/
-
-> This demo app is deployed with [Laravel Vapor](https://vapor.laravel.com/) and [Soketi](https://soketi.app/) Serverless.
+![demo](https://github.com/kitar/simplechat/assets/157844/dba7753a-4db7-4f90-b7bf-4a990e3d3532)
 
 ### Create a DynamoDB table
 
